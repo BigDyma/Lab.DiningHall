@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "a+R+79PSMLIJaN5Qi4n6Hn16PmNUF5HUhtxNHFL7i7ydhTRlykLrgmwnbwnYyt5aYXSuUEp5ezP81hgw3+KtRg==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\dumitru.strelet\\Desktop\\PR_labs\\Lab.DiningHall\\DinningHall\\DinningHall\\DinningHall.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\dumitru.strelet\\.nuget\\packages\\microsoft.visualstudio.azure.containers.tools.targets\\1.11.1\\microsoft.visualstudio.azure.containers.tools.targets.1.11.1.nupkg.sha512"
+  ],
+  "logs": []
+}
