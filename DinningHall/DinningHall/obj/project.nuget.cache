@@ -1,10 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "a+R+79PSMLIJaN5Qi4n6Hn16PmNUF5HUhtxNHFL7i7ydhTRlykLrgmwnbwnYyt5aYXSuUEp5ezP81hgw3+KtRg==",
+  "dgSpecHash": "TsdCops4tJib7FreZMrOIakSxoFDMNFH0ppnnoIBMxyFuWj5VNxXC8j4Xvm1EXjCYpm/VkjRpSPeZflde6QhRQ==",
   "success": true,
   "projectFilePath": "C:\\Users\\dumitru.strelet\\Desktop\\PR_labs\\Lab.DiningHall\\DinningHall\\DinningHall\\DinningHall.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\dumitru.strelet\\.nuget\\packages\\microsoft.visualstudio.azure.containers.tools.targets\\1.11.1\\microsoft.visualstudio.azure.containers.tools.targets.1.11.1.nupkg.sha512"
+    "C:\\Users\\dumitru.strelet\\.nuget\\packages\\microsoft.visualstudio.azure.containers.tools.targets\\1.11.1\\microsoft.visualstudio.azure.containers.tools.targets.1.11.1.nupkg.sha512",
+    "C:\\Users\\dumitru.strelet\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512"
   ],
   "logs": []
 }

@@ -5,7 +5,8 @@ using System.Threading.Tasks;
 
 namespace DinningHall.Models
 {
-    public class DinningHall
+    public class BaseEntity
     {
+        public Guid Id { get; set; }
     }
 }

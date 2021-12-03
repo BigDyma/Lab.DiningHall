@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace DinningHall.Models
+namespace DinningHall.Service
 {
-    public class OrderManager : Order
+    public class WaiterService
     {
-        public Guid TableId { get; set; }
     }
 }

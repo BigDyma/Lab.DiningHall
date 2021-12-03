@@ -1,4 +1,6 @@
 ﻿using DinningHall.Models.Domain;
+using DinningHall.Service;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace DinningHall.Models
 {
-    public class Table : BaseEntity
+    public class Waiter : BaseEntity
     {
-        public TableState State { get; set; }
-        public DateTime orderedAt { get; set; }
+        public WaiterState State { get; set; }
+
     }
 }
