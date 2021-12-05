@@ -6,7 +6,7 @@ namespace DinningHall.Service
     public interface IRequestService
     {
 
-        void SendOrder(Waiter waiter, Order order, Table table);
+        Task SendOrder(Waiter waiter, Order order, Table table);
 
 
     }

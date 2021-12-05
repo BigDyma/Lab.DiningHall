@@ -1,11 +1,15 @@
 {
   "version": 2,
-  "dgSpecHash": "TsdCops4tJib7FreZMrOIakSxoFDMNFH0ppnnoIBMxyFuWj5VNxXC8j4Xvm1EXjCYpm/VkjRpSPeZflde6QhRQ==",
+  "dgSpecHash": "DSqTH8gK3j0SsZupgMwHSfG9IppHMQjT0WY3iUFx6sVzFAm4ohuZ1rcD/NSwmXA28djreVBo1sFYer5+3u3K4A==",
   "success": true,
-  "projectFilePath": "C:\\Users\\dumitru.strelet\\Desktop\\PR_labs\\Lab.DiningHall\\DinningHall\\DinningHall\\DinningHall.csproj",
+  "projectFilePath": "C:\\Users\\dumitru.strelet\\prlab\\Lab.DiningHall\\DinningHall\\DinningHall\\DinningHall.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\dumitru.strelet\\.nuget\\packages\\microsoft.visualstudio.azure.containers.tools.targets\\1.11.1\\microsoft.visualstudio.azure.containers.tools.targets.1.11.1.nupkg.sha512",
-    "C:\\Users\\dumitru.strelet\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512"
+    "C:\\Users\\dumitru.strelet\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512",
+    "C:\\Users\\dumitru.strelet\\.nuget\\packages\\microsoft.netcore.app.ref\\3.1.0\\microsoft.netcore.app.ref.3.1.0.nupkg.sha512",
+    "C:\\Users\\dumitru.strelet\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\3.1.0\\microsoft.windowsdesktop.app.ref.3.1.0.nupkg.sha512",
+    "C:\\Users\\dumitru.strelet\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\3.1.10\\microsoft.aspnetcore.app.ref.3.1.10.nupkg.sha512",
+    "C:\\Users\\dumitru.strelet\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\3.1.21\\microsoft.netcore.app.host.win-x64.3.1.21.nupkg.sha512"
   ],
   "logs": []
 }

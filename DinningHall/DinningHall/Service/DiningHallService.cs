@@ -24,46 +24,50 @@ namespace DinningHall.Service
         {
             Server = server;
             this.baseRepository = baseRepository;
-            StartWaitersWork();
+            StartWaitersWork().GetAwaiter().GetResult();
         }
         public async Task ServeOrder(Order order)
         {
             if (order is object)
                await baseRepository.ServeOrder(order);
         }
-        public Task StartWaitersWork()
+        public async Task StartWaitersWork()
         {
-            Thread.Sleep(100);
-            new Thread(() =>
+            await Task.Run(() =>
             {
-                while (true)
+                Thread.Sleep(100);
+                new Thread(delegate()
                 {
-                    var availableWaiters = baseRepository.GetAvailableWaiters();
-
-                    foreach (var waiter in availableWaiters)
+                    while (true)
                     {
-                        foreach (var table in baseRepository.GetTables())
-                        {
-                            mutex.WaitOne();
-                            if (table.State == TableState.Available)
-                            {
-                                Console.WriteLine($"Waiter {waiter.Id} approched the Table {table.Id}");
-                                table.State = TableState.Ordering;
-                                baseRepository.UpdateTable(table);
-                                mutex.ReleaseMutex();
-                                Order order = baseRepository.SetOrder(waiter, table);
-                                table.orderedAt = DateTime.Now;
-                                baseRepository.UpdateTable(table);
-                                baseRepository.AddOrder(order);
+                        var availableWaiters = baseRepository.GetAvailableWaiters();
 
-                                Server.SendOrder(waiter, order, table);
+                        foreach (var waiter in availableWaiters)
+                        {
+                            foreach (var table in baseRepository.GetTables())
+                            {
+                                mutex.WaitOne();
+                                if (table.State == TableState.Available)
+                                {
+                                    Console.WriteLine($"Waiter {waiter.Id} approched the Table {table.Id}");
+                                    table.State = TableState.Ordering;
+                                    baseRepository.UpdateTable(table);
+                                    mutex.ReleaseMutex();
+                                    Order order = baseRepository.SetOrder(waiter, table);
+                                    table.orderedAt = DateTime.Now;
+                                    baseRepository.UpdateTable(table);
+                                    baseRepository.AddOrder(order);
+
+                                    Server.SendOrder(waiter, order, table);
+                                }
+                                else
+                                    mutex.ReleaseMutex();
                             }
-                            else
-                                mutex.ReleaseMutex();
                         }
                     }
-                }
-            }).Start();
+                }).Start();
+            });
+
         }
 
 

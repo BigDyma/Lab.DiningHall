@@ -16,18 +16,18 @@ namespace DinningHall.Domain.Repository
         public BaseRepository(DinningContext dinningContext)
         {
             this.dinningContext = dinningContext;
-            SetClientsForAllTables();
+            SetClientsForAllTables().GetAwaiter().GetResult();
         }
 
-        protected void SetClientsForAllTables()
+        protected async Task SetClientsForAllTables()
         {
             foreach (var table in dinningContext.Tables)
             {
-                GetClients(table);
+                await GetClients(table);
             }
         }
 
-        public async Task GetClients( Table table)
+        protected async Task GetClients( Table table)
         {
            await Task.Run(() =>
             {
