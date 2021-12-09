@@ -140,19 +140,21 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\dumitru.strelet\\prlab\\Lab.DiningHall\\DinningHall\\DinningHall\\DinningHall.csproj",
+      "projectUniqueName": "C:\\Users\\dumitru.strelet\\Desktop\\PR_labs\\t\\Lab.DiningHall\\DinningHall\\DinningHall\\DinningHall.csproj",
       "projectName": "DinningHall",
-      "projectPath": "C:\\Users\\dumitru.strelet\\prlab\\Lab.DiningHall\\DinningHall\\DinningHall\\DinningHall.csproj",
+      "projectPath": "C:\\Users\\dumitru.strelet\\Desktop\\PR_labs\\t\\Lab.DiningHall\\DinningHall\\DinningHall\\DinningHall.csproj",
       "packagesPath": "C:\\Users\\dumitru.strelet\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\dumitru.strelet\\prlab\\Lab.DiningHall\\DinningHall\\DinningHall\\obj\\",
+      "outputPath": "C:\\Users\\dumitru.strelet\\Desktop\\PR_labs\\t\\Lab.DiningHall\\DinningHall\\DinningHall\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\dumitru.strelet\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\dumitru.strelet\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp3.1"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -190,24 +192,6 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
-        "downloadDependencies": [
-          {
-            "name": "Microsoft.AspNetCore.App.Ref",
-            "version": "[3.1.10, 3.1.10]"
-          },
-          {
-            "name": "Microsoft.NETCore.App.Host.win-x64",
-            "version": "[3.1.21, 3.1.21]"
-          },
-          {
-            "name": "Microsoft.NETCore.App.Ref",
-            "version": "[3.1.0, 3.1.0]"
-          },
-          {
-            "name": "Microsoft.WindowsDesktop.App.Ref",
-            "version": "[3.1.0, 3.1.0]"
-          }
-        ],
         "frameworkReferences": {
           "Microsoft.AspNetCore.App": {
             "privateAssets": "none"
@@ -216,7 +200,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Users\\dumitru.strelet\\.dotnet\\sdk\\6.0.100\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.403\\RuntimeIdentifierGraph.json"
       }
     }
   }
