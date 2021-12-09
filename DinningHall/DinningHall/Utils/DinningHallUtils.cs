@@ -23,12 +23,91 @@ namespace DinningHall.Utils
         }
         public static List<Food> LoadJson()
         {
-            using (StreamReader r = new StreamReader("Menu.json"))
+
+            var foods = new List<Food>();
+
+            foods.AddRange(new List<Food>
             {
-                string json = r.ReadToEnd();
-                List<Food> items = JsonSerializer.Deserialize<List<Food>>(json);
-                return items;
-            }
+                new Food
+                   {
+                       Name = "Pizza",
+                       PreparationTime = 20,
+                       Complexity = 2,
+                       CookingApparatusTypeName = "oven"
+                   },
+                new Food
+                {
+                    Name = "Salad",
+                    PreparationTime = 10,
+                    Complexity = 1,
+                    CookingApparatusTypeName = null
+                },
+                new Food
+                {
+                    Name = "Zeama",
+                    PreparationTime = 7,
+                    Complexity = 1,
+                    CookingApparatusTypeName = "stove"
+                },
+                new Food
+                {
+                    Name = "Scallop Sashami with Meyer Lemon Confit",
+                    PreparationTime = 32,
+                    Complexity = 3,
+                    CookingApparatusTypeName = null
+                },
+                new Food
+                {
+                    Name = "Island Duck with Mulberry Mustard",
+                    PreparationTime = 35,
+                    Complexity = 3,
+                    CookingApparatusTypeName = "oven"
+                },
+                new Food
+                {
+                    Name = "Waffles",
+                    PreparationTime = 10,
+                    Complexity = 1,
+                    CookingApparatusTypeName = "stove"
+                },
+                new Food
+                {
+                    Name = "Aubergine",
+                    PreparationTime = 20,
+                    Complexity = 2,
+                    CookingApparatusTypeName = null
+                },
+                new Food
+                {
+                    Name = "Lasagna",
+                    PreparationTime = 30,
+                    Complexity = 2,
+                    CookingApparatusTypeName = "oven"
+                },
+                new Food
+                {
+                    Name = "Burger",
+                    PreparationTime = 15,
+                    Complexity = 1,
+                    CookingApparatusTypeName = "oven"
+                },
+                new Food
+                {
+                    Name = "Gyros",
+                    PreparationTime = 15,
+                    Complexity = 1,
+                    CookingApparatusTypeName = null
+                }
+            });
+
+            return foods;
+
+            //using (StreamReader r = new StreamReader("Menu.json"))
+            //{
+            //    string json = r.ReadToEnd();
+            //    List<Food> items = JsonSerializer.Deserialize<List<Food>>(json);
+            //    return items;
+            //}
         }
         public static List<Table> GetTables( int amount)
         {

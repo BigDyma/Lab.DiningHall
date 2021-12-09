@@ -13,5 +13,10 @@ namespace DinningHall.Models
         public float MaxWaitTime { get; set; }
         public Guid TableId { get; set; }
 
+        public Order() : base()
+        {
+
+        }
+
     }
 }

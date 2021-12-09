@@ -6,11 +6,12 @@ namespace DinningHall.Domain.Repository
 {
     public interface IBaseRepository
     {
-        List<Order> AddOrder(Order order);
-        List<Waiter> GetAvailableWaiters();
-        List<Table> GetTables();
-        Order SetOrder(Waiter waiter, Table table);
-        Table UpdateTable(Table table);
-        Task ServeOrder(Order order);
+        Task<List<Order>> AddOrder(Order order);
+        Task<List<Waiter>> GetAvailableWaiters();
+        Task<List<Table>> GetTables();
+        Task<Order> SetOrder(Waiter waiter, Table table);
+        Task<Table> UpdateTable(Table table);
+        Task<Task> ServeOrder(Order order);
+        Task InitContext();
     }
 }

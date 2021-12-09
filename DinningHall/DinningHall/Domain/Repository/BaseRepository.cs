@@ -11,17 +11,22 @@ namespace DinningHall.Domain.Repository
 {
     public class BaseRepository : IBaseRepository
     {
-        private DinningContext dinningContext { get; }
+        private DinningContext _dinningContext { get; }
 
         public BaseRepository(DinningContext dinningContext)
         {
-            this.dinningContext = dinningContext;
-            SetClientsForAllTables().GetAwaiter().GetResult();
+            _dinningContext = dinningContext;
+        }
+
+        public async Task InitContext()
+        {
+            _dinningContext.InitContext();
+            await SetClientsForAllTables();
         }
 
         protected async Task SetClientsForAllTables()
         {
-            foreach (var table in dinningContext.Tables)
+            foreach (var table in _dinningContext.Tables)
             {
                 await GetClients(table);
             }
@@ -29,43 +34,43 @@ namespace DinningHall.Domain.Repository
 
         protected async Task GetClients( Table table)
         {
-           await Task.Run(() =>
+           await Task.Run(async () =>
             {
                 var time = new Random().Next(2, 4);
                 Thread.Sleep(time);
                 table.State = TableState.Available;
-                UpdateTable(table);
+                await  UpdateTable(table);
             });
         }
         public  async Task ServeOrder(Order order)
         {
-            var table = dinningContext.Tables.First(t => t.Id == order.TableId);
+            var table = _dinningContext.Tables.First(t => t.Id == order.TableId);
             float waitTime = (DateTime.Now.Ticks - table.orderedAt.Ticks) / (10000 * 1000);
 
             Console.WriteLine($"Table {table.Id} received order {order.Id}:");
 
             Assessor.Assess(waitTime, order);
-            dinningContext.Orders = dinningContext.Orders.Where(o => o.Id != order.Id).ToList();
+            _dinningContext.Orders = _dinningContext.Orders.Where(o => o.Id != order.Id).ToList();
 
             await GetClients(table);
         }
-        public List<Waiter> GetAvailableWaiters()
+        public async Task<List<Waiter>> GetAvailableWaiters()
         {
-            return dinningContext.Waiters.Where(x => x.State == Models.WaiterState.Available).ToList();
+            return await Task.FromResult(_dinningContext.Waiters.Where(x => x.State == Models.WaiterState.Available).ToList());
         }
-        public List<Table> GetTables()
+        public async Task<List<Table>> GetTables()
         {
-            return dinningContext.Tables;
-        }
-
-        public Table UpdateTable(Table table)
-        {
-            dinningContext.Tables.Where(x => x.Id == table.Id).ToList().ForEach(x => x = table);
-
-            return table;
+            return await Task.FromResult(_dinningContext.Tables);
         }
 
-        public Order SetOrder(Waiter waiter, Table table)
+        public async Task<Table> UpdateTable(Table table)
+        {
+            _dinningContext.Tables.Where(x => x.Id == table.Id).ToList().ForEach(x => x = table);
+
+            return await Task.FromResult(table);
+        }
+
+        public async Task<Order> SetOrder(Waiter waiter, Table table)
         {
             waiter.State = WaiterState.TakingOrder;
             var time = new Random().Next(2, 4);
@@ -78,23 +83,23 @@ namespace DinningHall.Domain.Repository
 
             for (int i = 0; i < amount; i++)
             {
-                order.Items.Add(dinningContext.Menu[new Random().Next(1, dinningContext.Menu.Count - 1)]);
+                order.Items.Add(_dinningContext.Menu[new Random().Next(1, _dinningContext.Menu.Count - 1)]);
             }
-            order.MaxWaitTime = order.Items.Select(o => dinningContext.Menu.Find(i => i.Id == o.Id).PreparationTime).OrderByDescending(t => t).First() * 1.3f;
+            order.MaxWaitTime = order.Items.Select(o => _dinningContext.Menu.Find(i => i.Id == o.Id).PreparationTime).OrderByDescending(t => t).First() * 1.3f;
             order.TableId = table.Id;
             order.Priority = DinningHallUtils.GeneratePriority(order);
 
             table.State = TableState.WaitingForOrder;
-            UpdateTable(table);
-            dinningContext.Orders.Add(order);
+            await UpdateTable(table);
+            await AddOrder(order);
             return order;
         }
 
-        public List<Order> AddOrder(Order order)
+        public  Task<List<Order>> AddOrder(Order order)
         {
-            dinningContext.Orders.Add(order);
+            _dinningContext.Orders.Add(order);
 
-            return dinningContext.Orders;
+            return Task.FromResult(_dinningContext.Orders);
         }
       }
  }
