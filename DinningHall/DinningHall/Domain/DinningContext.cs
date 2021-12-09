@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace DinningHall
 {
-    public class DinningContext : BackgroundService
+    public class DinningContext : IDinningContext
     {
         public List<Food> Menu { get; set; }
         public List<Table> Tables { get; set; }
@@ -19,24 +19,30 @@ namespace DinningHall
 
         public DinningContext()
         {
-            Menu = DinningHallUtils.getMenu();
-            Waiters = DinningHallUtils.GetWaiters(5);
-            Tables = DinningHallUtils.GetTables(5);
+            InitContext();
+            
         }
-        protected void InitTables()
+
+        public void InitContext()
+        {
+            InitMenu();
+            InitTables();
+            InitWaiters();
+            Orders = new List<Order>();
+        }
+        protected void InitMenu()
         {
             Menu = DinningHallUtils.getMenu();
         }
         protected void InitWaiters()
         {
+            Waiters = DinningHallUtils.GetWaiters(5);
+
+        }
+        protected void InitTables()
+        {
             Tables = DinningHallUtils.GetTables(5);
         }
-    
-        protected override Task ExecuteAsync(CancellationToken stoppingToken)
-        {
-            InitTables();
-            InitWaiters();
-            return Task.CompletedTask;
-        }
+
     }
 }

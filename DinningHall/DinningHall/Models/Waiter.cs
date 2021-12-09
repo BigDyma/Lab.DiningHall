@@ -13,5 +13,10 @@ namespace DinningHall.Models
     {
         public WaiterState State { get; set; }
 
+        public Waiter(): base()
+        {
+
+        }
+
     }
 }

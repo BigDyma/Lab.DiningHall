@@ -11,5 +11,10 @@ namespace DinningHall.Models
     {
         public TableState State { get; set; }
         public DateTime orderedAt { get; set; }
+
+        public Table(): base()
+        {
+
+        }
     }
 }

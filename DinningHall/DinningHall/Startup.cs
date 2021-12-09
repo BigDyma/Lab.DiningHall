@@ -1,3 +1,4 @@
+using DinningHall.Domain.Repository;
 using DinningHall.Service;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -26,9 +27,14 @@ namespace DinningHall
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddControllers();
+
+
             services.AddSingleton<IRequestService, RequestService>();
             services.AddSingleton<IDiningHallService, DiningHallService>();
-            services.AddHostedService<DinningContext>();
+            services.AddSingleton<IBaseRepository>(new BaseRepository(new DinningContext()));
+
+            services.AddHostedService<DinningHallWorker>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

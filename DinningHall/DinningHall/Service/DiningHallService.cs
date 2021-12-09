@@ -12,65 +12,61 @@ using System.Threading.Tasks;
 namespace DinningHall.Service
 {
 
-    public class DiningHallService : IDiningHallService
+    public class DiningHallService :  IDiningHallService
     {
-        public readonly IBaseRepository baseRepository;
+        public readonly IBaseRepository _baseRepository;
 
-        private readonly IRequestService Server;
-
-        private static Mutex mutex = new Mutex();
+        private readonly IRequestService _server;
 
         public DiningHallService(IRequestService server, IBaseRepository baseRepository)
         {
-            Server = server;
-            this.baseRepository = baseRepository;
-            StartWaitersWork().GetAwaiter().GetResult();
+            _server = server;
+            _baseRepository = baseRepository;
         }
         public async Task ServeOrder(Order order)
         {
             if (order is object)
-               await baseRepository.ServeOrder(order);
+               await _baseRepository.ServeOrder(order);
         }
         public async Task StartWaitersWork()
         {
-            await Task.Run(() =>
-            {
-                Thread.Sleep(100);
-                new Thread(delegate()
-                {
-                    while (true)
-                    {
-                        var availableWaiters = baseRepository.GetAvailableWaiters();
+            var availableWaiters = await _baseRepository.GetAvailableWaiters();
+            var tables = await  _baseRepository.GetTables();
 
-                        foreach (var waiter in availableWaiters)
-                        {
-                            foreach (var table in baseRepository.GetTables())
-                            {
-                                mutex.WaitOne();
-                                if (table.State == TableState.Available)
-                                {
-                                    Console.WriteLine($"Waiter {waiter.Id} approched the Table {table.Id}");
-                                    table.State = TableState.Ordering;
-                                    baseRepository.UpdateTable(table);
-                                    mutex.ReleaseMutex();
-                                    Order order = baseRepository.SetOrder(waiter, table);
-                                    table.orderedAt = DateTime.Now;
-                                    baseRepository.UpdateTable(table);
-                                    baseRepository.AddOrder(order);
-
-                                    Server.SendOrder(waiter, order, table);
-                                }
-                                else
-                                    mutex.ReleaseMutex();
-                            }
-                        }
-                    }
-                }).Start();
+            await Task.Run(() => {
+                if (availableWaiters is object)
+                    Parallel.ForEach(availableWaiters, async (waiter) =>
+                     {
+                    //        foreach (var waiter in availableWaiters)
+                    //{
+                    foreach (var table in tables)
+                   {
+                       if (table.State == TableState.Available)
+                       {
+                           Console.WriteLine($"Waiter {waiter.Id} approched the Table {table.Id}");
+                           table.State = TableState.Ordering;
+                           await _baseRepository.UpdateTable(table);
+                           Order order = await _baseRepository.SetOrder(waiter, table);
+                           table.orderedAt = DateTime.Now;
+                           await _baseRepository.UpdateTable(table);
+                           await _baseRepository.AddOrder(order);
+                           _server.SendOrder(waiter, order, table).ConfigureAwait(false).GetAwaiter().GetResult();
+                       }
+                   }
+               });
+                return Task.CompletedTask;
             });
+
 
         }
 
-
-
+        public async Task StartWaitersWork(CancellationToken stoppingToken)
+        {
+            while (!stoppingToken.IsCancellationRequested)
+            {
+                await StartWaitersWork();
+                await Task.Delay(1000);
+            }
+        }
     }
 }

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DinningHall.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api")]
     [ApiController]
     public class ReceiveRequestsController : ControllerBase
     {
