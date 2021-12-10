@@ -15,13 +15,8 @@ namespace DinningHall.Domain.Repository
 
         public  BaseRepository(DinningContext dinningContext)
         {
-            _dinningContext = dinningContext;
-            InitContext().ConfigureAwait(false).GetAwaiter().GetResult();
-        }
-
-        public async Task InitContext()
-        {
-            await SetClientsForAllTables();
+            this.dinningContext = dinningContext;
+            SetClientsForAllTables().GetAwaiter().GetResult();
         }
 
         protected async Task SetClientsForAllTables()

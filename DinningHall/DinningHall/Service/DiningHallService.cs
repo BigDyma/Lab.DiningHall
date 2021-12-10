@@ -37,10 +37,8 @@ namespace DinningHall.Service
                 if (availableWaiters is object)
                     Parallel.ForEach(availableWaiters, async (waiter) =>
                      {
-                    //        foreach (var waiter in availableWaiters)
-                    //{
                     foreach (var table in tables)
-                   {
+                    {
                        if (table.State == TableState.Available)
                        {
                            Console.WriteLine($"Waiter {waiter.Id} approched the Table {table.Id}");

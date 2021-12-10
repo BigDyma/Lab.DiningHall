@@ -47,6 +47,8 @@ namespace DinningHall
 
             app.UseHttpsRedirection();
 
+            app.UseMiddleware<HandleExceptionsMiddleware>();
+
             app.UseRouting();
 
             app.UseAuthentication();

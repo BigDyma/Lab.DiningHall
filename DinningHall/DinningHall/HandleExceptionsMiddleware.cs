@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -7,22 +8,24 @@ using System.Threading.Tasks;
 
 namespace DinningHall
 {
-    public class ServerMiddleware
+    public class HandleExceptionsMiddleware
     {
         private readonly RequestDelegate _next;
-        public ServerMiddleware(RequestDelegate next)
+        private readonly ILogger<HandleExceptionsMiddleware> _logger;
+        public HandleExceptionsMiddleware(RequestDelegate next)
         {
             _next = next;
         }
         public async Task InvokeAsync(HttpContext context)
         {
-            var cultureQuery = context.Request.Query["culture"];
-            if (!string.IsNullOrWhiteSpace(cultureQuery))
+            try
             {
-                var culture = new CultureInfo(cultureQuery);
-
-                CultureInfo.CurrentCulture = culture;
-                CultureInfo.CurrentUICulture = culture;
+                await _next(context);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                await context.Response.WriteAsync(ex.Message);
 
             }
 
