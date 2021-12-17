@@ -13,29 +13,17 @@ namespace DinningHall.Controllers
     [ApiController]
     public class ReceiveRequestsController : ControllerBase
     {
-        private readonly IDiningHallService _diningHallService;
-        public ReceiveRequestsController(IDiningHallService diningHallService)
+        private readonly IDinningHallService _dinningHall;
+        public ReceiveRequestsController(IDinningHallService dinningHall)
         {
-            this._diningHallService = diningHallService;
+            this._dinningHall = dinningHall;
         }
 
         [HttpPost("Order/ready")]
         public async Task<IActionResult >ReceiveOrder(Order order)
         {
-           await _diningHallService.ServeOrder(order);
+           await _dinningHall.ServeOrder(order);
             return Ok();
-        }
-        [HttpPost("Kitchen/ready")]
-        public async Task<IActionResult> Start()
-        {
-            await _diningHallService.StartWaitersWork();
-            return Ok();
-        }
-
-        [HttpPost("Kitchen/closed")]
-        public  void Stop()
-        {
-            System.Environment.Exit(1);
         }
     }
 }

@@ -5,25 +5,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using DinningHall.Domain.Repository;
 
 namespace DinningHall.Service
 {
     public class DinningHallWorker : BackgroundService
     {
-        private readonly IDiningHallService _diningHallService;
+        private readonly IWaiterService _waiterService;
         private readonly ILogger<DinningHallWorker> _logger;
-
-        public DinningHallWorker(IDiningHallService diningHallService, ILogger<DinningHallWorker> logger)
+        public DinningHallWorker(IWaiterService waiterService, ILogger<DinningHallWorker> logger)
         {
-            _diningHallService = diningHallService;
+            _waiterService = waiterService;
             _logger = logger;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            _logger.LogInformation("$Worker running ");
-            await _diningHallService.StartWaitersWork(stoppingToken);
-
+            await _waiterService.StartWaitersWork(stoppingToken);
         }
     }
 }

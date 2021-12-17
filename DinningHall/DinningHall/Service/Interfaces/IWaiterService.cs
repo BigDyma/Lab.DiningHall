@@ -7,10 +7,8 @@ using System.Threading.Tasks;
 
 namespace DinningHall.Service
 {
-    public interface IDiningHallService
+    public interface IWaiterService
     {
-        Task StartWaitersWork();
-        Task ServeOrder(Order order);
         Task StartWaitersWork(CancellationToken stoppingToken);
     }
 }

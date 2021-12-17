@@ -12,6 +12,8 @@ namespace DinningHall.Domain.Repository
         Task<Order> SetOrder(Waiter waiter, Table table);
         Task<Table> UpdateTable(Table table);
         Task ServeOrder(Order order);
-        Task InitContext();
+        Task SetClientsForAllTables();
+        Task<List<Waiter>> GetAllWaiters();
+        
     }
 }

@@ -7,15 +7,14 @@ namespace DinningHall.Models
 {
     public class Order : BaseEntity
     {
-        public List<Food> Items = new List<Food>();
+        public List<Food> Items  {get; set;}
         public int Priority { get; set; }
-        public double MaxWait { get; set; }
         public float MaxWaitTime { get; set; }
         public Guid TableId { get; set; }
 
         public Order() : base()
         {
-
+            Items = new List<Food>();
         }
 
     }

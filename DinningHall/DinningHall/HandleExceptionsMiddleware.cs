@@ -12,9 +12,10 @@ namespace DinningHall
     {
         private readonly RequestDelegate _next;
         private readonly ILogger<HandleExceptionsMiddleware> _logger;
-        public HandleExceptionsMiddleware(RequestDelegate next)
+        public HandleExceptionsMiddleware(RequestDelegate next, ILogger<HandleExceptionsMiddleware> logger)
         {
             _next = next;
+            _logger = logger;
         }
         public async Task InvokeAsync(HttpContext context)
         {

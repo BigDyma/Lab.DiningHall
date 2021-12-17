@@ -31,9 +31,10 @@ namespace DinningHall
 
 
             services.AddSingleton<IRequestService, RequestService>();
-            services.AddSingleton<IDiningHallService, DiningHallService>();
+            services.AddSingleton<IWaiterService, WaiterService>();
             services.AddSingleton<IBaseRepository>(new BaseRepository(new DinningContext()));
-
+            services.AddSingleton<IDinningHallService, DinningHallService>();
+            
             services.AddHostedService<DinningHallWorker>();
         }
 
@@ -47,7 +48,7 @@ namespace DinningHall
 
             app.UseHttpsRedirection();
 
-            app.UseMiddleware<HandleExceptionsMiddleware>();
+            //app.UseMiddleware<HandleExceptionsMiddleware>();
 
             app.UseRouting();
 

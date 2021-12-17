@@ -16,7 +16,7 @@ namespace DinningHall.Models
 
         public string CookingApparatusTypeName { get; set; }
 
-        public CookingApparatusType? CookingApparatuType => SetCookingApparatus();
+        public CookingApparatusType? CookingApparatus => SetCookingApparatus();
 
         private CookingApparatusType? SetCookingApparatus()
         {

@@ -22,12 +22,13 @@ namespace DinningHall.Service
             using (var client = new HttpClient())
             {
                var res = await PostSendOrder(order, client);
-                
-                if (res.StatusCode == HttpStatusCode.OK)
-                {
-                    Console.WriteLine($"Order {order.Id} was sent.");
-                    waiter.State = WaiterState.Available;
-                }
+
+               if (res.StatusCode == HttpStatusCode.OK)
+               {
+                   Console.WriteLine($"Order {order.Id} was sent.");
+                   waiter.State = WaiterState.Available;
+               }
+               else throw  new Exception("Request was not sent properly");
             }
         }
         private async Task<HttpResponseMessage> PostSendOrder(Order filter, HttpClient httpClient)

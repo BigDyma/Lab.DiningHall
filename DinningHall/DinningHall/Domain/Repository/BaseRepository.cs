@@ -9,60 +9,103 @@ using System.Threading.Tasks;
 
 namespace DinningHall.Domain.Repository
 {
-    public class BaseRepository : IBaseRepository
+    public class BaseRepository : IBaseRepository, IContextInitializator
     {
         private DinningContext _dinningContext { get; }
 
-        public  BaseRepository(DinningContext dinningContext)
+        private static  SemaphoreLocker _locker = new SemaphoreLocker();
+
+        public BaseRepository(DinningContext dinningContext)
         {
-            this.dinningContext = dinningContext;
-            SetClientsForAllTables().GetAwaiter().GetResult();
+            this._dinningContext = dinningContext;
         }
 
-        protected async Task SetClientsForAllTables()
+        public async Task SetClientsForAllTables()
         {
+
             foreach (var table in _dinningContext.Tables)
             {
+                Console.WriteLine($"{table.Id} is leaving... Grade 0");
                 await GetClients(table);
             }
         }
 
-        protected async Task GetClients( Table table)
+        protected async Task GetClients(Table table)
         {
-           await Task.Run(async () =>
-            {
-                var time = new Random().Next(2, 4);
-                Thread.Sleep(time);
-                table.State = TableState.Available;
-                await  UpdateTable(table);
-            });
+
+                        var time = new Random().Next(2, 4);
+                        Thread.Sleep(time);
+                        table.State = TableState.Available;
+                        var t = await UpdateTable(table);
+
+                        Console.WriteLine($"table {t.Id} is now available");
         }
-        public  async Task ServeOrder(Order order)
+    
+
+        public async Task ServeOrder(Order order)
         {
+
             var table = _dinningContext.Tables.First(t => t.Id == order.TableId);
             float waitTime = (DateTime.Now.Ticks - table.orderedAt.Ticks) / (10000 * 1000);
 
             Console.WriteLine($"Table {table.Id} received order {order.Id}:");
 
             Assessor.Assess(waitTime, order);
-            _dinningContext.Orders = _dinningContext.Orders.Where(o => o.Id != order.Id).ToList();
 
-            await GetClients(table);
+           await  RemoveOrder(order);
+
+            await GetClients(table); 
         }
+
+    private async Task RemoveOrder(Order order)
+    {
+    await _locker.LockAsync( () =>
+    {
+         _dinningContext.Orders = _dinningContext.Orders.Where(o => o.Id != order.Id).ToList();
+         return Task.CompletedTask;
+    });     
+    }
+
+    public async Task<List<Waiter>> GetAllWaiters()
+    {
+       return await _locker.LockAsync(() =>
+        {
+            return Task.FromResult(_dinningContext.Waiters);
+        });
+    }
+
         public async Task<List<Waiter>> GetAvailableWaiters()
         {
-            return await Task.FromResult(_dinningContext.Waiters.Where(x => x.State == Models.WaiterState.Available).ToList());
+            var allTables = await GetAllWaiters();
+
+            return allTables.Where(x => x.State == Models.WaiterState.Available)
+                .ToList();
+
         }
         public async Task<List<Table>> GetTables()
         {
-            return await Task.FromResult(_dinningContext.Tables);
+           // return await _locker.LockAsync(async () =>
+             return   await Task.FromResult(_dinningContext.Tables);
+                    //);
         }
 
         public async Task<Table> UpdateTable(Table table)
-        {
-            _dinningContext.Tables.Where(x => x.Id == table.Id).ToList().ForEach(x => x = table);
+        { 
 
-            return await Task.FromResult(table);
+                await Task.Run(() =>
+                {
+                    for (var i = 0; i < _dinningContext.Tables.Count; i++)
+                    {
+                        if (_dinningContext.Tables[i].Id == table.Id)
+                        {
+                            _dinningContext.Tables[i] = table;
+                            Console.WriteLine($"{table.Id} was update to state {table.State}");
+                        }
+                    }
+                });
+                return table;
+            
+
         }
 
         public async Task<Order> SetOrder(Waiter waiter, Table table)
@@ -90,12 +133,14 @@ namespace DinningHall.Domain.Repository
             return order;
         }
 
-        public  Task<List<Order>> AddOrder(Order order)
+        public async Task<List<Order>> AddOrder(Order order)
         {
-            _dinningContext.Orders.Add(order);
 
-            return Task.FromResult(_dinningContext.Orders);
+                await Task.Run(() =>
+                    _dinningContext.Orders.Add(order));
+
+                return _dinningContext.Orders;
         }
     }
- }
+}
 
